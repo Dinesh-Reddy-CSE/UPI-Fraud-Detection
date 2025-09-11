@@ -1,48 +1,70 @@
-# 🔒 UPI-FRAUD-DETECTION
-**Detect Fraud Faster, Secure Payments Smarter**  
+# UPI Fraud Detection System 🛡️💳
 
-[![Streamlit](https://img.shields.io/badge/Framework-Streamlit-FF4B4B?logo=streamlit)](https://streamlit.io/)  
-[![Python](https://img.shields.io/badge/Language-Python-blue?logo=python)](https://www.python.org/)  
-[![scikit-learn](https://img.shields.io/badge/ML-scikit--learn-F7931E?logo=scikitlearn)](https://scikit-learn.org/)  
-[![Pandas](https://img.shields.io/badge/Data-Pandas-150458?logo=pandas)](https://pandas.pydata.org/)  
-[![Numpy](https://img.shields.io/badge/Math-Numpy-013243?logo=numpy)](https://numpy.org/)  
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Status](https://img.shields.io/badge/Status-Active-brightgreen)
 
----
-
-## 📑 Table of Contents
-- [Overview](#overview)  
-- [Getting Started](#getting-started)  
-- [Installation](#installation)  
-- [Usage](#usage)  
-- [Testing](#testing)  
+A Machine Learning-based system designed to detect fraudulent UPI (Unified Payments Interface) transactions in real-time. Built to enhance digital payment security by identifying suspicious patterns using supervised learning models.
 
 ---
 
-## 📖 Overview
-UPI-Fraud-Detection is an AI-powered project designed to **analyze UPI transactions in real-time** and detect fraudulent activities using **machine learning models**.  
+## 📌 Overview
 
-The system provides a **streamlined fraud detection pipeline** with data preprocessing, anomaly detection, classification models, and interactive dashboards.  
+With the rapid adoption of UPI in India, fraud detection has become critical for financial institutions and users alike. This project leverages historical transaction data to train classification models that can flag potentially fraudulent UPI transactions before they cause harm.
 
-### Why UPI-Fraud Detection?
-- 📊 **Data Generation** – Create synthetic UPI transaction datasets to model fraud and genuine cases.  
-- 🔍 **Anomaly Detection** – Identify suspicious transaction patterns with machine learning.  
-- 📈 **Interactive Dashboard** – Monitor fraud analytics in real time with Streamlit.  
-- ⚙️ **Environment Consistency** – Reliable deployment with Python 3.11 and dependency control.  
-- 🔗 **Seamless Integration** – Combine data, models, and UI for a complete fraud detection workflow.  
+Built using Python, Scikit-learn, Pandas, and deployed with a Flask API for easy integration.
+
+---
+
+## ✅ Features
+
+- Real-time UPI transaction fraud detection
+- Multiple ML models (Logistic Regression, Random Forest, XGBoost)
+- Feature engineering for transaction behavior analysis
+- Model evaluation with precision, recall, and F1-score
+- REST API for integration with banking/payment apps
+- Configurable thresholds for fraud probability
+
+---
+
+## 🛠️ Tech Stack
+
+- **Language**: Python  
+- **Data Processing**: Pandas, NumPy  
+- **Machine Learning**: Scikit-learn  
+- **Model Serialization**: Joblib  
+- **Visualization**: Matplotlib, Seaborn  
+- **Web Framework**: Streamlit  
 
 ---
 
 ## 🚀 Getting Started
 
-### ✅ Prerequisites
-- **Programming Language**: Python 3.11+  
-- **Package Manager**: pip  
+### Prerequisites
 
----
+- Python 3.8+
+- pip or conda
 
-## ⚡ Installation
+### Installation
 
-Clone the repository:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Dinesh-Reddy-CSE/UPI-Fraud-Detection.git
+   cd UPI-Fraud-Detection
 
-```bash
-git clone https://github.com/Dinesh-Reddy-CSE/UPI-Fraud-Detection.git
+2. Install requirements:
+   ```bash
+   pip install -r requirements.txt
+
+3. Train the model:
+    ```bash
+    python train_model.py
+
+4. Start the API Server:
+    ```bash
+    python app.py
+
+5. Access the API at:
+   ```bash
+    [python app.py](http://localhost:5000/predict)
+
