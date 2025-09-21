@@ -440,22 +440,10 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ## 📞 Contact & Support
 
 ### **Project Maintainer**
-**Dinesh Reddy**  
+**Anumula Dinesh Reddy**  
 🎓 Computer Science Engineer  
-📧 **Email**: [contact.anumula.dinesh@gmail.com](mailto:contact.anumula.dinesh@gmail.com)  
-💼 **LinkedIn**: [Connect with me](https://linkedin.com/in/dinesh-reddy-anumula)  
+📧 **Email**: [contact.anumula.dinesh@gmail.com](mailto:contact.anumula.dinesh@gmail.com)    
 🐙 **GitHub**: [@Dinesh-Reddy-CSE](https://github.com/Dinesh-Reddy-CSE)
-
-### **Support Channels**
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/Dinesh-Reddy-CSE/UPI-Fraud-Detection/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/Dinesh-Reddy-CSE/UPI-Fraud-Detection/discussions)
-- 📧 **Email Support**: For enterprise inquiries and collaborations
-
-### **Response Times**
-- 🚨 **Critical Issues**: Within 24 hours
-- 🐛 **Bug Reports**: Within 48 hours  
-- 💡 **Feature Requests**: Within 1 week
-- 📧 **General Inquiries**: Within 3-5 business days
 
 ---
 
@@ -469,10 +457,6 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ---
 
 <div align="center">
-
-### ⭐ **If this project helped you, please give it a star!** ⭐
-
-**Made with ❤️ for the fintech community**
 
 [🔝 Back to Top](#️-upi-fraud-detection-system)
 
