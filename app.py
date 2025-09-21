@@ -26,43 +26,8 @@ def load_data():
 
 @st.cache_resource
 def load_model():
-    model = joblib.load('isolation_forest_model.pkl')
-    label_encoders = joblib.load('label_encoders.pkl')
-    return model, label_encoders
-
-# Preprocess new transaction for prediction
-def preprocess_transaction(transaction, label_encoders):
-    # Create a copy
-    transaction_df = transaction.copy()
-    
-    # Extract time-based features
-    transaction_df['timestamp'] = pd.to_datetime(transaction_df['timestamp'])
-    transaction_df['hour'] = transaction_df['timestamp'].dt.hour
-    transaction_df['day_of_week'] = transaction_df['timestamp'].dt.dayofweek
-    transaction_df['is_weekend'] = transaction_df['day_of_week'].isin([5, 6]).astype(int)
-    transaction_df['is_night'] = ((transaction_df['hour'] >= 0) & (transaction_df['hour'] <= 5)).astype(int)
-    
-    # Encode categorical features using pre-trained encoders
-    categorical_cols = ['merchant_category', 'device', 'location']
-    
-    for col in categorical_cols:
-        le = label_encoders[col]
-        # Handle unseen labels by using a default value
-        try:
-            transaction_df[col] = le.transform([transaction_df[col]])[0]
-        except ValueError:
-            # If label is unseen, use the most frequent category
-            transaction_df[col] = le.transform([le.classes_[0]])[0]
-    
-    # Calculate user transaction frequency (this would normally come from historical data)
-    # For demo purposes, we'll use a placeholder value
-    transaction_df['user_frequency'] = 10  # Placeholder
-    
-    # Feature set for prediction
-    features = ['amount', 'hour', 'day_of_week', 'is_weekend', 'is_night',
-                'merchant_category', 'device', 'location', 'user_frequency']
-    
-    return transaction_df[features]
+    pipeline = joblib.load('fraud_detection_pipeline.pkl')
+    return pipeline
 
 def main():
     st.title("UPI Transaction Fraud Detection System")
@@ -73,7 +38,7 @@ def main():
     
     # Load data and model
     df = load_data()
-    model, label_encoders = load_model()
+    pipeline = load_model()
     
     # Sidebar for navigation
     st.sidebar.title("Navigation")
@@ -85,7 +50,7 @@ def main():
     elif app_mode == "Transaction Analysis":
         show_transaction_analysis(df)
     elif app_mode == "Real-time Detection":
-        show_real_time_detection(df, model, label_encoders)
+        show_real_time_detection(df, pipeline)
 
 def show_dashboard(df):
     st.header("Transaction Dashboard")
@@ -248,7 +213,7 @@ def show_transaction_analysis(df):
                      title="Fraud Distribution by Location")
         st.plotly_chart(fig, use_container_width=True)
 
-def show_real_time_detection(df, model, label_encoders):
+def show_real_time_detection(df, pipeline):
     st.header("Real-time Fraud Detection")
     
     st.markdown("""
@@ -288,12 +253,9 @@ def show_real_time_detection(df, model, label_encoders):
             'location': location
         }
         
-        # Preprocess transaction
+        # Preprocess transaction and predict using the pipeline
         transaction_df = pd.DataFrame([transaction])
-        features = preprocess_transaction(transaction_df, label_encoders)
-        
-        # Predict
-        prediction = model.predict(features)
+        prediction = pipeline.predict(transaction_df)
         is_fraud = prediction[0] == -1
         
         # Display result
