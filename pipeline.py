@@ -31,6 +31,16 @@ class UserFrequencyCalculator(BaseEstimator, TransformerMixin):
         X_['user_frequency'] = X_['user_id'].map(self.user_frequency_).fillna(0)
         return X_
 
+class DataFrameColumnDropper(BaseEstimator, TransformerMixin):
+    def __init__(self, columns):
+        self.columns = columns
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        return X.drop(columns=self.columns, axis=1, errors='ignore')
+
 # Define the columns for each transformation
 numeric_features = ['amount', 'hour', 'day_of_week', 'user_frequency']
 categorical_features = ['merchant_category', 'device', 'location']
@@ -45,10 +55,13 @@ preprocessor = ColumnTransformer(
 )
 
 def create_pipeline():
+    # Define columns to drop
+    columns_to_drop = ['user_id', 'ip_address', 'user_transaction_count']
+
     return Pipeline(steps=[
         ('user_frequency', UserFrequencyCalculator()),
         ('time_extractor', TimeFeatureExtractor()),
-        ('column_dropper', ColumnTransformer([('drop_columns', 'drop', ['user_id'])], remainder='passthrough')),
+        ('column_dropper', DataFrameColumnDropper(columns=columns_to_drop)),
         ('preprocessor', preprocessor),
         ('model', IsolationForest(n_estimators=100, max_samples='auto', contamination=0.05, random_state=42))
     ])

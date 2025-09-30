@@ -8,6 +8,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from datetime import datetime, timedelta, time
+import os
 
 # Set page config
 st.set_page_config(
@@ -35,7 +36,19 @@ def main():
     This system detects anomalous UPI transactions that may indicate fraudulent activity.
     It uses Isolation Forest, an unsupervised machine learning algorithm, to identify unusual patterns.
     """)
-    
+
+    # Check for required files
+    required_files = ['upi_transactions.csv', 'fraud_detection_pipeline.pkl']
+    missing_files = [file for file in required_files if not os.path.exists(file)]
+
+    if missing_files:
+        st.error(f"Error: The following required files are missing: {', '.join(missing_files)}")
+        if 'upi_transactions.csv' in missing_files:
+            st.info("Please run `python generate_data.py` to generate the transaction data.")
+        if 'fraud_detection_pipeline.pkl' in missing_files:
+            st.info("Please run `python train_model.py` to train the model and create the pipeline file.")
+        st.stop()
+
     # Load data and model
     df = load_data()
     pipeline = load_model()

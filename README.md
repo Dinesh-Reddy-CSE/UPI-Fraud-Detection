@@ -194,15 +194,17 @@ Our system uses a comprehensive synthetic dataset with the following features:
    pip install -r requirements.txt
    ```
 
-4. **Generate Sample Data** (Optional - for testing)
+4. **Generate Transaction Data**
    ```bash
    python generate_data.py
    ```
+   This will create `upi_transactions.csv` with synthetic data for the application to use.
 
-5. **Train the Model**
+5. **Train the Fraud Detection Model**
    ```bash
    python train_model.py
    ```
+   This will train the model and create the `fraud_detection_pipeline.pkl` file.
 
 6. **Launch the Application**
    ```bash
@@ -242,23 +244,29 @@ import joblib
 import pandas as pd
 from datetime import datetime
 
-# Load the trained model
-model = joblib.load('isolation_forest_model.pkl')
-label_encoders = joblib.load('label_encoders.pkl')
+# Load the trained pipeline
+pipeline = joblib.load('fraud_detection_pipeline.pkl')
 
-# Prepare transaction data
-transaction = {
-    'amount': 50000,
-    'timestamp': datetime.now(),
-    'user_id': 'USER00123',
-    'merchant_category': 'Electronics',
-    'device': 'Android',
-    'location': 'Mumbai'
+# Prepare transaction data (as a DataFrame)
+transaction_data = {
+    'timestamp': [datetime.now()],
+    'amount': [25000],
+    'user_id': ['USER00123'],
+    'merchant_category': ['Electronics'],
+    'device': ['Android'],
+    'location': ['Mumbai']
 }
+transaction_df = pd.DataFrame(transaction_data)
 
 # Get fraud prediction
-# (Feature engineering and prediction logic here)
-fraud_score = model.predict(processed_features)
+# The pipeline handles all preprocessing
+prediction = pipeline.predict(transaction_df)
+
+# The model returns -1 for anomalies (fraud) and 1 for normal transactions
+if prediction[0] == -1:
+    print("Fraudulent transaction detected!")
+else:
+    print("Transaction appears to be legitimate.")
 ```
 
 ---
@@ -337,10 +345,10 @@ Analyzes a single transaction for fraud probability.
 UPI-Fraud-Detection/
 ├── 📄 README.md                 # Project documentation
 ├── 🐍 app.py                    # Streamlit web application
+├── 🐍 pipeline.py               # Defines the model pipeline
 ├── 🤖 train_model.py            # Model training script
 ├── 📊 generate_data.py          # Synthetic data generation
-├── 💾 isolation_forest_model.pkl # Trained ML model
-├── 🔧 label_encoders.pkl        # Feature encoders
+├── 💾 fraud_detection_pipeline.pkl # Trained ML model pipeline
 ├── 📋 requirements.txt          # Python dependencies
 ├── ⚙️ runtime.txt               # Python version specification
 └── 📈 upi_transactions.csv      # Sample transaction data
@@ -352,19 +360,40 @@ UPI-Fraud-Detection/
 
 ### **Common Issues**
 
-#### **1. Model Loading Error**
+#### **1. File Not Found Error**
 ```
-FileNotFoundError: isolation_forest_model.pkl not found
+FileNotFoundError: [Errno 2] No such file or directory: 'fraud_detection_pipeline.pkl'
 ```
-**Solution**: Run `python train_model.py` to generate the model files.
+**Solution**: The required model file is missing. Run the training script to generate it:
+```bash
+python train_model.py
+```
 
-#### **2. Streamlit Port Conflict**
+#### **2. Data File Not Found**
+```
+FileNotFoundError: [Errno 2] No such file or directory: 'upi_transactions.csv'
+```
+**Solution**: The transaction data file is missing. Run the data generation script:
+```bash
+python generate_data.py
+```
+
+#### **3. Streamlit Port Conflict**
 ```
 Port 8501 is already in use
 ```
 **Solution**: Use a different port: `streamlit run app.py --server.port 8502`
 
-#### **3. Memory Issues**
+#### **4. KeyError: 'is_fraud'**
+```
+KeyError: 'is_fraud'
+```
+**Solution**: This error occurs if the `is_fraud` column is not present in `upi_transactions.csv`. This can happen if you are using a custom dataset. Ensure your data includes this column or regenerate the sample data:
+```bash
+python generate_data.py
+```
+
+#### **5. Memory Issues**
 ```
 MemoryError during model training
 ```
